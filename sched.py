@@ -47,7 +47,6 @@ def _init(conference, the_date, url):
             newdesc=""
             for item in desc:
                 if item.string!=None:
-                    print item.string
                     newdesc += item.string
                 else:
                     pass
