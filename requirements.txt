@@ -1,2 +1,5 @@
-BeautifulSoup==3.2.1
-csvkit==0.6.1
+lxml==3.3.5
+mechanize==0.2.5
+python-dateutil==1.5
+requests==2.3.0
+unicodecsv==0.13.0
