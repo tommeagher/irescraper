@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import argparse
 from datetime import date, datetime, timedelta
 
+import re
 import requests
 from lxml import html
 import unicodecsv
@@ -68,7 +70,10 @@ class Conference:
                 exit()
             else:
                 conf_html = r.content
+        #cheat to drop pesky curly apostrophes
+        conf_html = conf_html.replace('&rsquo;', "'")
         tree = html.fromstring(conf_html)
+
         first_day = tree.xpath('body/div/div[2]/section/section[2]/article/div/ul/li/a')[0].text
         self.dateify(first_day)
         
@@ -109,6 +114,7 @@ class Conference:
                         new_desc = new_desc + p.text_content() + '\n'
                 else:
                     new_desc = ''
+
                 item.desc = new_desc
                 
                 self.add(item)
