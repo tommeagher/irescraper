@@ -38,5 +38,10 @@ There are a few other optional command-line arguments as well:
 
 If you want instructions on how to get the Gcal version into your Google Calendar, [read these handy instructions](https://github.com/tommeagher/irescraper/blob/master/GCAL_README.md). 
 
+##Contributors
+
+* Tom Meagher
+* Chris L. Keller
+
 ##Etc.
 If you spot a bug, have questions or ideas for improvement, please [file a ticket](https://github.com/tommeagher/irescraper/issues) or [ping me on Twitter](http://www.twitter.com/ultracasual/).
