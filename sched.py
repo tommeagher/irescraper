@@ -133,7 +133,7 @@ class Conference:
             self.output_file = self.output_file
             
         with open(self.output_file, 'wb') as f:
-            headers = ['Topic', 'Subject', 'Start Date', 'Start Time', 'End Date', 'End Time']
+            headers = ['Topic', 'Title', 'Start Date', 'Start Time', 'End Date', 'End Time']
             if gcal:
                 headers.extend(['All Day Event', 'Description', 'Location', 'Private'])
             else:
@@ -198,7 +198,7 @@ def main():
     '''
     parser = argparse.ArgumentParser(description="Scrape IRE/NICAR schedules into CSVs")
     parser.add_argument('conf', default='NICAR', nargs='?', help='What conference do you want a schedule for? IRE or NICAR?')
-    parser.add_argument('-g', dest='gcal', action='store_true', help='Use this flag to create a CSV in a Gcal-friendly format.')
+    parser.add_argument('-g', dest='gcal', action='store_true', help='Create a CSV in a Gcal-friendly format.')
     parser.add_argument('-u', dest='url', help='Pass in a different URL to scrape from the standard pattern.')
     parser.add_argument('-y', dest='year', help='Perhaps you want a previous year?')
 
