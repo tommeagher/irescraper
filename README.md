@@ -1,8 +1,8 @@
 #Schedule scraper for IRE conferences
 
-This is a command-line Python program that will generate a convenient CSV of the schedules for the annual conferences held by [Investigative Reporters and Editors](http://www.ire.org/).
+This is a command-line Python program that will generate a convenient CSV of the schedules for the annual conferences held by [Investigative Reporters and Editors](http://www.ire.org/). The program is completely rewritten after growing out of [an earlier iteration](https://github.com/tommeagher/Scrapers/tree/master/nicarscraper).
 
-This [CSV of the schedule for the IRE 2015 conference in Philadelphia](https://github.com/tommeagher/irescraper/blob/master/ire2015sched.csv) was generated with the script.
+A [CSV of the schedule for the IRE 2015 conference in Philadelphia](https://github.com/tommeagher/irescraper/blob/master/ire2015sched.csv) was generated with the script.
 
 The script also generates [a version of the CSV](https://github.com/tommeagher/irescraper/blob/master/GCAL_ire2015sched.csv) that is easy to import into your Google Calendar.
 
