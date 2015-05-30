@@ -3,7 +3,6 @@
 import argparse
 from datetime import date, datetime, timedelta
 
-import re
 import requests
 from lxml import html
 import unicodecsv
