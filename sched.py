@@ -11,7 +11,7 @@ class Conference:
     def __init__(self, conf='NICAR', year=None):
         self.conf = conf
         if year:
-            self.year=year
+            self.year=int(year)
         else:
             self.year = date.today().year
         self.output_file = "{0}{1}sched.csv".format(conf.lower(), self.year)
@@ -50,8 +50,12 @@ class Conference:
         '''
         Take an IRE date string and make it a Python date object
         '''
-        conf_date = datetime.strptime(date_string, "%a., %B %d")
-        first_day = date(2015, conf_date.month, conf_date.day)
+        try:
+            conf_date = datetime.strptime(date_string, "%a., %B %d")
+            first_day = date(self.year, conf_date.month, conf_date.day)
+        except ValueError:
+            conf_date = datetime.strptime(date_string, "%a., %b. %d")
+            first_day = date(self.year, conf_date.month, conf_date.day)
         self.conf_date = first_day
         return self.conf_date
 
