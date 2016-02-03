@@ -2,9 +2,9 @@
 
 This is a command-line Python program that will generate a convenient CSV of the schedules for the annual conferences held by [Investigative Reporters and Editors](http://www.ire.org/). The program is completely rewritten after growing out of [an earlier iteration](https://github.com/tommeagher/Scrapers/tree/master/nicarscraper).
 
-A [CSV of the schedule for the IRE 2015 conference in Philadelphia](https://github.com/tommeagher/irescraper/blob/master/ire2015sched.csv) was generated with the script.
+A [CSV of the schedule for the NICAR 2016 conference in Denver](https://github.com/tommeagher/irescraper/blob/master/nicar2016sched.csv) was generated with the script.
 
-The script also generates [a version of the CSV](https://github.com/tommeagher/irescraper/blob/master/GCAL_ire2015sched.csv) that is easy to import into your Google Calendar.
+The script also generates [a version of the CSV](https://github.com/tommeagher/irescraper/blob/master/GCAL_nicar2016sched.csv) that is easy to import into your Google Calendar.
 
 Schedules for previous conferences are stored in the aptly named ```pastyears/``` dir.
 
@@ -22,7 +22,7 @@ pip install -r requirements.txt   #install the dependencies
 ```
 
 ##Running the command-line script
-It's as easy to run as ```python sched.py```. Without specifying which conference you want (either NICAR or IRE), this will look for the schedule page for the current year's NICAR by default and save it to a CSV called nicar2015sched.csv.
+It's as easy to run as ```python sched.py```. Without specifying which conference you want (either NICAR or IRE), this will look for the schedule page for the current year's NICAR by default and save it to a CSV called nicar2016sched.csv.
 
 If you want the schedule for the organization's other marquee event--IRE--then try ```python sched.py ire```.
 
