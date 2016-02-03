@@ -132,7 +132,7 @@ class Conference:
             self.output_file = self.output_file
             
         with open(self.output_file, 'wb') as f:
-            headers = ['Topic', 'Title', 'Start Date', 'Start Time', 'End Date', 'End Time']
+            headers = ['Topic', 'Subject', 'Start Date', 'Start Time', 'End Date', 'End Time']
             if gcal:
                 headers.extend(['All Day Event', 'Description', 'Location', 'Private'])
             else:
