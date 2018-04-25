@@ -27,8 +27,14 @@ class Conference:
             self.url = 'http://ire.org/conferences/{0}{1}/schedule/'.format(self.conf.lower(), self.year)
             s = requests.get(self.url)
             if not s.ok:
-                print "Unable to guess URL. Please specify a URL to scrape with the -u flag."
-                exit()
+                self.url = 'http://ire.org/conferences/{0}{1}/schedule/'.format(self.conf.lower(), str(self.year)[-2:])
+                print(self.url)
+                t = requests.get(self.url)
+                if not t.ok:
+                    print "Unable to guess URL. Please specify a URL to scrape with the -u flag."
+                    exit()
+                else:
+                    self.url_content = t.content
             else:
                 self.url_content = s.content
         else:
