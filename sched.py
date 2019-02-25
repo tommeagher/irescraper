@@ -22,14 +22,15 @@ class Conference:
         Try to guess the URL based on how IRE has done it in the past.
         '''
         self.url = 'http://ire.org/conferences/{0}-{1}/schedule/'.format(self.conf.lower(), self.year)
-        r=requests.get(self.url)
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+        r=requests.get(self.url, headers=headers)
         if not r.ok:
             self.url = 'http://ire.org/conferences/{0}{1}/schedule/'.format(self.conf.lower(), self.year)
-            s = requests.get(self.url)
+            s = requests.get(self.url, headers=headers)
             if not s.ok:
                 self.url = 'http://ire.org/conferences/{0}{1}/schedule/'.format(self.conf.lower(), str(self.year)[-2:])
                 print(self.url)
-                t = requests.get(self.url)
+                t = requests.get(self.url, headers=headers)
                 if not t.ok:
                     print "Unable to guess URL. Please specify a URL to scrape with the -u flag."
                     exit()
@@ -73,7 +74,8 @@ class Conference:
             if self.url_content:
                 conf_html = self.url_content
         except:
-            r = requests.get(self.url)
+            headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+            r = requests.get(self.url, headers=headers)
             if not r.ok:
                 print "Invalid URL. Please specify a valid URL to scrape with the -u flag."
                 exit()
