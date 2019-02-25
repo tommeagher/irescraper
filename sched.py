@@ -21,14 +21,14 @@ class Conference:
         '''
         Try to guess the URL based on how IRE has done it in the past.
         '''
-        self.url = 'http://ire.org/conferences/{0}-{1}/schedule/'.format(self.conf.lower(), self.year)
+        self.url = 'http://ire.org/events-and-training/conferences/{0}-{1}/schedule/'.format(self.conf.lower(), self.year)
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
         r=requests.get(self.url, headers=headers)
         if not r.ok:
-            self.url = 'http://ire.org/conferences/{0}{1}/schedule/'.format(self.conf.lower(), self.year)
+            self.url = 'http://ire.org/events-and-training/conferences/{0}{1}/schedule/'.format(self.conf.lower(), self.year)
             s = requests.get(self.url, headers=headers)
             if not s.ok:
-                self.url = 'http://ire.org/conferences/{0}{1}/schedule/'.format(self.conf.lower(), str(self.year)[-2:])
+                self.url = 'http://ire.org/events-and-training/conferences/{0}{1}/schedule/'.format(self.conf.lower(), str(self.year)[-2:])
                 print(self.url)
                 t = requests.get(self.url, headers=headers)
                 if not t.ok:
@@ -84,11 +84,11 @@ class Conference:
         #cheat to drop pesky curly apostrophes
         conf_html = conf_html.replace('&rsquo;', "'")
         tree = html.fromstring(conf_html)
-
-        first_day = tree.xpath('body/div/div[2]/section/section[2]/article/div/ul/li/a')[0].text
+        first_day = tree.xpath('body/main/div/div/div/div/section[2]/article/div/ul[1]/li[1]/a')[0].text
         self.dateify(first_day)
+
         
-        days = tree.find_class('listview pane')
+        days = tree.find_class('list-table-1 schedule-list blank-list pane')
         datediff = timedelta(days=1)
         date = self.conf_date
 
@@ -100,13 +100,34 @@ class Conference:
             for session in sessions:
                 item = Session()
                 anchor = session.xpath('div/h3/a')[0]
-                item.name = anchor.text
                 item.url = 'http://ire.org'+ anchor.values()[0]
+
+                iteminfo = session.xpath(".//div[contains(@class, 'event-content') and contains(@class, 'item-content')]")[0]
+
+                if len(iteminfo.find_class("event-speakers")) > 0:
+                    item.speaker = iteminfo.find_class("event-speakers")[0].text_content().strip().split(':')[1].strip()
+                else: item.speaker = ""
+
+                desc_chunk = iteminfo.xpath('.//p[not(@class)]')
+                new_desc = ''
+                for p in desc_chunk:
+                    if len(p.text_content().strip()) > 0:
+                        # remove blocks of spaces that result from links in text
+                        desc_block = ' '.join(p.text_content().split())
+
+                        new_desc = new_desc + desc_block.strip() + '\n'
+
+
+                item.desc = new_desc
+
+                item.name = iteminfo.xpath(".//h3[contains(@class, 'event-title') and contains(@class, 'item-title') and contains(@class, 'title')]")[0].text_content().strip()
+
                 item.topic = item.tagging(item.name)
                 item.session_date = date
-                space_time = session.find_class('col-15 meta')[0]
-                item.place = space_time.xpath('p')[0].text
-                times = space_time.xpath('p')[1].text
+
+                space_time = session.xpath(".//div[contains(@class, 'event-meta') and contains(@class, 'item-meta')]")[0]
+                item.place = space_time.find_class('event-location')[0].text_content().strip()
+                times = space_time.xpath('p')[0].text_content().strip()
                 start_time = times.split('-')[0].strip()
                 if len(start_time.split()[0])<=2:
                     item.start_time = start_time.split()[0]+":00 " + start_time.split()[1]
@@ -117,16 +138,6 @@ class Conference:
                     item.end_time = end_time.split()[0]+":00 " + end_time.split()[1]
                 else:
                     item.end_time = end_time
-                item.speaker = session.xpath('div/p')[0].text_content().split(':')[1].strip()
-                desc_chunk = session.find_class('col-60 body2 gray-45')[0].xpath('p')
-                if len(desc_chunk)>2:
-                    new_desc = ''
-                    for p in desc_chunk[2:]:
-                        new_desc = new_desc + p.text_content() + '\n'
-                else:
-                    new_desc = ''
-
-                item.desc = new_desc
                 
                 self.add(item)
 
@@ -154,8 +165,9 @@ class Conference:
 
             for session in self.schedule:
                 output_row=[session.topic, session.name, session.session_date, session.start_time, session.session_date, session.end_time]
+
                 if gcal:
-                    if session.speaker=='TBA':
+                    if session.speaker=='TBA' or session.speaker == '':
                         desc = session.desc
                     else:
                         desc = session.speaker + ' - ' + session.desc + ' | URL: ' + session.url
