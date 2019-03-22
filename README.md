@@ -43,6 +43,7 @@ If you want instructions on how to get the Gcal version into your Google Calenda
 * Tom Meagher
 * [Chris L. Keller](https://github.com/chrislkeller)
 * [Joe Fox](https://github.com/joemfox)
+* [Jacob Sanders](https://github.com/thejqs)
 
 ##Etc.
 If you spot a bug, have questions or ideas for improvement, please [file a ticket](https://github.com/tommeagher/irescraper/issues) or [ping me on Twitter](http://www.twitter.com/ultracasual/).

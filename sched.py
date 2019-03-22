@@ -32,7 +32,7 @@ class Conference:
                 print(self.url)
                 t = requests.get(self.url, headers=headers)
                 if not t.ok:
-                    print "Unable to guess URL. Please specify a URL to scrape with the -u flag."
+                    print("Unable to guess URL. Please specify a URL to scrape with the -u flag.")
                     exit()
                 else:
                     self.url_content = t.content
@@ -77,12 +77,12 @@ class Conference:
             headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
             r = requests.get(self.url, headers=headers)
             if not r.ok:
-                print "Invalid URL. Please specify a valid URL to scrape with the -u flag."
+                print("Invalid URL. Please specify a valid URL to scrape with the -u flag.")
                 exit()
             else:
                 conf_html = r.content
         #cheat to drop pesky curly apostrophes
-        conf_html = conf_html.replace('&rsquo;', "'")
+        conf_html = conf_html.replace('&rsquo;', b"'")
         tree = html.fromstring(conf_html)
         first_day = tree.xpath('body/main/div/div/div/div/section[2]/article/div/ul[1]/li[1]/a')[0].text
         self.dateify(first_day)
@@ -210,7 +210,7 @@ class Session:
             if any(word in name_lower for word in topic["terms"]):
                 matched_topics.append(topic["tag"])
 
-        if matched_topics > 0:
+        if len(matched_topics) > 0:
             output = ", ".join(matched_topics)
             self.tags = output
             return self.tags
@@ -235,12 +235,12 @@ def main():
     if args.url:
         conf.update_url(args.url)
     else:
-        print "Sussing out the URL"
+        print("Sussing out the URL")
         conf.sniff_url()
 
-    print "Requesting {0}".format(conf.url)
+    print("Requesting {0}".format(conf.url))
 
-    print "Scraping {0} schedule...".format(conf.conf.upper())
+    print("Scraping {0} schedule...".format(conf.conf.upper()))
 
     conf.scrape()
 
@@ -249,11 +249,11 @@ def main():
     else:
         conf.write(gcal=None)
 
-    print "Found {0} {1} sessions over {2} days.".format(len(conf.schedule), conf.conf.upper(), conf.day_counter)
+    print("Found {0} {1} sessions over {2} days.".format(len(conf.schedule), conf.conf.upper(), conf.day_counter))
     
-    print "Writing {0} schedule to {1}".format(conf.conf.upper(), conf.output_file)
+    print("Writing {0} schedule to {1}".format(conf.conf.upper(), conf.output_file))
 
-    print "Have fun!"
+    print("Have fun!")
 
 if __name__ == '__main__':
     main()
